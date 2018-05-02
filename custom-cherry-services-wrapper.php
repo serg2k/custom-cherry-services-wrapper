@@ -14,12 +14,20 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-        die();
+    die();
 }
 
 function ccsw_wrap_cherry_services_item( $tpl ) {
-    $post_id = $post->ID;
-    $link = get_permalink( $post_id );
+    global $wp_query;
+    $link = get_permalink();
+
+    if ( isset( $wp_query->query['post_type'] ) ) {
+        $post_type = $wp_query->query['post_type'];
+    }
+    // If current page is service page do nothing
+    if ( $post_type == 'cherry-services' ) {
+        return $tpl;
+    }
 
     return $tpl . '<a href="' . $link . '" style="
         display: block;
